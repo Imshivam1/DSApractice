@@ -1,0 +1,107 @@
+from sys import stdin
+
+class Binarytree():
+    def __init__(self,data):
+        self.data= data
+        self.left= None
+        self.right= None
+
+    def printtree(self,root):
+        if root is None:
+            return
+        print(root.data, end=':')
+        if root.left is not None:
+            print('L',root.left.data, end=',')
+        if root.right is not None:
+            print('R',root.right.data, end=',')
+        print()
+        self.printtree(root.left)
+        self.printtree(root.right)
+
+    def take_input(self):
+        rootdata=int(input())
+        if rootdata == -1:
+            return None
+        root= Binarytree(rootdata)
+        lefttree= self.take_input()
+        righttree= self.take_input()
+        root.left= lefttree
+        root.right= righttree
+        return root
+    
+    def largestnode(self, root):
+        if root is None:
+            return -1
+        leftlargest= self.largestnode(root.left)
+        rightlargest= self.largestnode(root.right)
+        largest= max(leftlargest,rightlargest, root.data)
+        return largest
+    
+    def numberofnodes(self, root):
+        if root is None:
+            return 0
+        leftcount= self.numberofnodes(root.left)
+        rightcount= self.numberofnodes(root.right)
+        return 1+ leftcount + rightcount
+    
+    def sumnodes(self, root):
+        if root is None:
+            return 0
+        leftsum= self.sumnodes(root.left)
+        rightsum= self.sumnodes(root.right)
+        return leftsum+rightsum+ root.data
+    
+    def countlargethanx(self,root,x):
+        if root is None:
+            return 0
+        
+        count= 0
+
+        if root.data>x:
+            count=1
+        if root.left is not None:
+            count+=self.countlargethanx(root.left, x)
+        if root.right is not None:
+            count+=self.countlargethanx(root.right, x)
+        
+        return count
+    def mirrorbinarytree(self, root):
+        if root == None:
+            return None
+        if root.left == None and root.right == None:
+            return None
+        self.mirrorbinarytree(root.left)
+        self.mirrorbinarytree(root.right)
+
+        temp = root.left
+        root.left= root.right
+        root.right= temp
+
+        return root
+
+
+bt= Binarytree(0)
+
+rootdata= bt.take_input()
+x = int(stdin.readline().strip())
+
+#bt.printtree(rootdata)
+#print('number of nodes:',bt.numberofnodes(rootdata))
+#print('sum of nodes:',bt.sumnodes(rootdata))
+#print(bt.largestnode(rootdata))
+
+#print(bt.countlargethanx(rootdata,x))
+mirroredtree= bt.mirrorbinarytree(rootdata)
+print(mirroredtree)
+bt.printtree(mirroredtree)
+'''bn1 = Binarytree(1)
+bn2 = Binarytree(2)
+bn3 = Binarytree(3)
+bn4 = Binarytree(4)
+bn5 = Binarytree(5)
+
+bn1.left = bn2
+bn1.right = bn3
+bn2.left = bn4
+bn2.right = bn5
+bn1.printTreedetailed(bn1)'''
