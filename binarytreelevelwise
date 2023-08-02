@@ -1,0 +1,51 @@
+from sys import stdin
+import queue
+
+class Binarytree():
+    def __init__(self, data):
+        self.data = data
+        self.left = None
+        self.right = None
+
+    def printtree(self, root):
+        if root is None:
+            return
+        print(root.data, end=':')
+        if root.left is not None:
+            print('L', root.left.data, end=',')
+        if root.right is not None:
+            print('R', root.right.data, end=',')
+        print()
+        self.printtree(root.left)
+        self.printtree(root.right)
+
+    def takeinputlevelwise(self):
+        q = queue.Queue()
+        print('Enter root:')
+        rootdata = int(input())
+        if rootdata == -1:
+            return None
+        root = Binarytree(rootdata)
+        q.put(root)
+        while not q.empty():
+            currentnode = q.get()
+            print('Enter left child of', currentnode.data)
+            leftchilddata = int(input())
+            if leftchilddata != -1:
+                leftchild = Binarytree(leftchilddata)
+                currentnode.left = leftchild
+                q.put(leftchild)
+
+            print('Enter right child of', currentnode.data)
+            rightchilddata = int(input())
+            if rightchilddata != -1:
+                rightchild = Binarytree(rightchilddata)
+                currentnode.right = rightchild
+                q.put(rightchild)
+
+        return root
+
+bt = Binarytree(0)
+
+rootdata = bt.takeinputlevelwise()
+bt.printtree(rootdata)
