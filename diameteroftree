@@ -1,0 +1,66 @@
+import queue
+
+class Binarytree():
+    def __init__(self, data):
+        self.data = data
+        self.left = None
+        self.right = None
+
+class Pair():
+    def __init__(self, height=0, diameter=0):
+        self.height = height
+        self.diameter = diameter
+
+    def diameterhelper(self, root):
+        if root is None:
+            pair = Pair(0, 0)
+            return pair
+        
+        leftpair = self.diameterhelper(root.left)
+        rightpair = self.diameterhelper(root.right)
+
+        leftdiameter = leftpair.diameter
+        rightdiameter = rightpair.diameter
+
+        diameterfromroot = leftpair.height + rightpair.height + 1
+
+        diameter = max(leftdiameter, rightdiameter, diameterfromroot)
+        height = max(leftpair.height, rightpair.height) + 1
+
+        return Pair(diameter, height)
+
+    def diameterofbinarytree(self, root):
+        pair = self.diameterhelper(root)
+        return pair.diameter
+
+    def printbinarytree(self, root):
+        if root is None:
+            return 
+        print(root.data, end=':')
+        if root.left is not None:
+            print('L', root.left.data, end=',')
+        if root.right is not None:
+            print('R', root.right.data)
+        self.printbinarytree(root.left)
+        self.printbinarytree(root.right)
+
+    def take_input(self):
+        rootdata = int(input())
+        if rootdata == -1:
+            return None
+        root = Binarytree(rootdata)
+        leftroot = self.take_input()
+        rightroot = self.take_input()
+        root.left = leftroot
+        root.right = rightroot
+
+        return root
+
+
+bt = Binarytree(0)
+paired = Pair()
+rootdata = paired.take_input()
+diameteroftree = paired.diameterofbinarytree(rootdata)
+paired.printbinarytree(rootdata)
+print()
+print(diameteroftree)
